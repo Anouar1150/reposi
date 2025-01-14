@@ -83,8 +83,13 @@ if st.session_state["selected_post"]:
 
     operation = st.selectbox("Choisissez une opération principale :", [""] + list(operations.keys()))
     sous_operation = None
+
     if operation:
-        sous_operation = st.selectbox("Choisissez une sous-opération :", [""] + operations[operation])
+        if operation == "Autre":
+            sous_operation = st.text_input("Entrez une sous-opération personnalisée :")
+        else:
+            sous_operation = st.selectbox("Choisissez une sous-opération :", [""] + operations[operation])
+
 
     if sous_operation and st.button("Ajouter la sous-opération"):
         sous_op_data = {
