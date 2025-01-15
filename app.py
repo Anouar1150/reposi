@@ -94,28 +94,34 @@ if st.session_state["selected_post"]:
 
         # Affichage des postures sous forme de colonnes
         st.subheader("Sélectionnez une posture")
-        postures = [
-            ["A1", "A2", "A3", "A4", "A5"],
-            ["B1", "B2", "B3", "B4", "B5"],
-            ["C1", "C2", "C3", "C4", "C5"],
-            ["D1", "D2", "D3", "D4", "D5"],
-            ["E1", "E4", "E5"],
-            ["F1", "F2", "F3", "F4", "F5"],
-            ["G1", "G2", "G3", "G4", "G5"],
-            ["H1", "H3", "H4", "H5"],
-            ["K3", "K4", "K5"],
-        ]
 
-        # Adapter l'affichage des colonnes pour tous les écrans
-        cols = st.columns(len(postures))  # Création dynamique de colonnes
-        for col, group in zip(cols, postures):
-            for posture in group:
-                if col.button(posture, key=f"posture_{posture}"):
-                    if posture not in selected_post["Opérations"][selected_operation]["Postures"]:
-                        selected_post["Opérations"][selected_operation]["Postures"].append(posture)
-                        st.success(f"Posture '{posture}' ajoutée à l'opération '{selected_operation}'.")
-                    else:
-                        st.warning(f"Posture '{posture}' existe déjà pour cette opération.")
+        # Groupes de postures
+        postures = {
+            "A": ["A1", "A2", "A3", "A4", "A5"],
+            "B": ["B1", "B2", "B3", "B4", "B5"],
+            "C": ["C1", "C2", "C3", "C4", "C5"],
+            "D": ["D1", "D2", "D3", "D4", "D5"],
+            "E": ["E1", "E4", "E5"],
+            "F": ["F1", "F2", "F3", "F4", "F5"],
+            "G": ["G1", "G2", "G3", "G4", "G5"],
+            "H": ["H1", "H3", "H4", "H5"],
+            "K": ["K3", "K4", "K5"],
+        }
+
+        # Création d'une colonne par groupe
+        cols = st.columns(len(postures))  # Une colonne par clé du dictionnaire
+
+        for col, (group_name, posture_list) in zip(cols, postures.items()):
+            with col:
+                st.write(f"**{group_name}**")  # Nom du groupe (A, B, C...)
+                for posture in posture_list:
+                    if st.button(posture, key=f"posture_{posture}"):
+                        if posture not in selected_post["Opérations"][selected_operation]["Postures"]:
+                            selected_post["Opérations"][selected_operation]["Postures"].append(posture)
+                            st.success(f"Posture '{posture}' ajoutée à l'opération '{selected_operation}'.")
+                        else:
+                            st.warning(f"Posture '{posture}' existe déjà pour cette opération.")
+
 
         # Ajout de l'effort
         st.subheader("Documenter l'Effort")
