@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 
 # Configuration de la page
-st.set_page_config(page_title="Application de Cotation", layout="wide")
+st.set_page_config(page_title="Application de Cotation", layout="centered")
 
 # Initialisation de la session
 if "posts" not in st.session_state:
@@ -93,6 +93,7 @@ if st.session_state["selected_post"]:
         st.header(f"Gestion des Postures et de l'Effort pour l'Opération : {selected_operation}")
 
         # Affichage des postures sous forme de colonnes
+        st.subheader("Sélectionnez une posture")
         postures = [
             ["A1", "A2", "A3", "A4", "A5"],
             ["B1", "B2", "B3", "B4", "B5"],
@@ -104,10 +105,12 @@ if st.session_state["selected_post"]:
             ["H1", "H3", "H4", "H5"],
             ["K3", "K4", "K5"],
         ]
-        cols = st.columns(len(postures))  # Une colonne par groupe de postures
+
+        # Adapter l'affichage des colonnes pour tous les écrans
+        cols = st.columns(len(postures))  # Création dynamique de colonnes
         for col, group in zip(cols, postures):
             for posture in group:
-                if col.button(posture):
+                if col.button(posture, key=f"posture_{posture}"):
                     if posture not in selected_post["Opérations"][selected_operation]["Postures"]:
                         selected_post["Opérations"][selected_operation]["Postures"].append(posture)
                         st.success(f"Posture '{posture}' ajoutée à l'opération '{selected_operation}'.")
